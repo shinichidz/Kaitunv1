@@ -94,15 +94,26 @@ local function CheckQuest()
             CFrameQuest = CFrame.new(1059.37195, 15.4495068, 1550.4231, 0.939700544, -0, -0.341998369, 0, 1, -0, 0.341998369, 0, 0.939700544)
             CFrameMon = CFrame.new(1045.962646484375, 27.00250816345215, 1560.8203125)
         elseif MyLevel == 10 or MyLevel <= 14 then
-elseif MyLevel == 150 then
+        
+if MyLevel >= 10 and MyLevel < 40 then
+    Mon = "Desert Bandit" -- Hoặc quái phù hợp level
+    NameMon = "Desert Bandit"
+    CFrameMon = CFrame.new(932, 45, 4485) -- Vị trí quái ví dụ
+elseif MyLevel >= 40 and MyLevel < 150 then
     Mon = "Sky Bandit"
     NameMon = "Sky Bandit"
     CFrameMon = CFrame.new(-4953.20703125, 295.74420166015625, -2899.22900390625)
-    
-    -- Bắt đầu auto tìm và đánh Sky Bandit
+
+    -- Tự động lên Sky Island nếu chưa ở đó
+    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < 500) then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-5000, 800, -2600) -- Vị trí Sky Island
+        wait(2)
+    end
+
+    -- Bắt đầu auto đánh Sky Bandit
     spawn(function()
         while wait(0.5) do
-            if game.Players.LocalPlayer.Data.Level.Value == 150 then
+            if game.Players.LocalPlayer.Data.Level.Value >= 40 and game.Players.LocalPlayer.Data.Level.Value < 150 then
                 local target = nil
                 for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                     if v.Name == "Sky Bandit" and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
@@ -113,16 +124,29 @@ elseif MyLevel == 150 then
 
                 if target then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
-                    wait(0.2) -- Đợi nhân vật ổn định vị trí trước khi tấn công
+                    wait(0.2)
                     game:GetService("VirtualUser"):CaptureController()
                     game:GetService("VirtualUser"):Button1Down(Vector2.new(0, 0), Vector2.new(0, 0))
                 end
             else
-                break -- Dừng vòng lặp nếu không còn ở level 150
+                break -- Dừng vòng lặp nếu vượt quá level 150
             end
         end
     end)
-    elseif MyLevel == 175 or MyLevel <= 189 then
+elseif MyLevel >= 150 then
+    -- Khi đạt level 150, bắt đầu nhận quest và farm như bình thường
+    Mon = "Sky Bandit"
+    LevelQuest = 1
+    NameQuest = "SkyQuest"
+    NameMon = "Sky Bandit"
+    CFrameQuest = CFrame.new(-4839.53027, 716.368591, -2619.44165)
+    CFrameMon = CFrame.new(-4953.20703125, 295.74420166015625, -2899.22900390625)
+end
+
+            Mon = "Sky Bandit"
+            NameMon = "Sky Bandit"
+            CFrameMon = CFrame.new(-4953.20703125, 295.74420166015625, -2899.22900390625)
+        elseif MyLevel == 175 or MyLevel <= 189 then
             Mon = "Dark Master"
             LevelQuest = 2
             NameQuest = "SkyQuest"
