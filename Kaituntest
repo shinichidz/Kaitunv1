@@ -46,7 +46,7 @@ end
 spawn(function()
     while wait() do
         if _G.AutoFarm then
-            
+           
 spawn(function()
 		pcall(function()
 			while wait() do
@@ -103,8 +103,7 @@ local function CheckQuest()
             LevelQuest = 2
             NameQuest = "SkyQuest"
             NameMon = "Dark Master"
-            CFrameQuest = CFrame.new(-4839.53027, 716.368591, -2619.44165, 0.866007268, 0, 0.500031412, 0, 1, 0, -0.500031412, 0, 0.866007268)
-            CFrameMon = CFrame.new(-5259.8447265625, 391.3976745605469, -2229.035400390625)
+                        CFrameMon = CFrame.new(-5259.8447265625, 391.3976745605469, -2229.035400390625)
         elseif MyLevel == 190 or MyLevel <= 209 then
             Mon = "Prisoner"
             LevelQuest = 1
@@ -154,9 +153,7 @@ local function CheckQuest()
             NameMon = "Fishman Warrior"
             CFrameQuest = CFrame.new(61122.65234375, 18.497442245483, 1569.3997802734)
             CFrameMon = CFrame.new(60878.30078125, 18.482830047607422, 1543.7574462890625)
-            if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
-            end
+            
         elseif MyLevel == 400 or MyLevel <= 449 then
             Mon = "Fishman Commando"
             LevelQuest = 2
@@ -164,9 +161,7 @@ local function CheckQuest()
             NameMon = "Fishman Commando"
             CFrameQuest = CFrame.new(61122.65234375, 18.497442245483, 1569.3997802734)
             CFrameMon = CFrame.new(61922.6328125, 18.482830047607422, 1493.934326171875)
-            if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
-            end
+            
         elseif MyLevel == 450 or MyLevel <= 474 then
             Mon = "God's Guard"
             LevelQuest = 1
@@ -3704,7 +3699,7 @@ spawn(function()
 	end)
 StopTween(_G.Auto_Dungeon)
 
- 
+  
         end
     end
 end)
