@@ -46,7 +46,7 @@ end
 spawn(function()
     while wait() do
         if _G.AutoFarm then
-            
+           
 spawn(function()
 		pcall(function()
 			while wait() do
@@ -3784,7 +3784,7 @@ spawn(function()
 
         if level >= 15 and level < 100 then
             -- Kiểm tra nếu chưa ở đảo Sky thì bay lên
-            if hrp.Position.Y < 500 then
+            if hrp and hrp.Position.Y < 500 then
                 hrp.CFrame = CFrame.new(-5000, 800, -2600) -- Vị trí đảo Sky
                 wait(2)
             end
@@ -3804,8 +3804,7 @@ spawn(function()
             CheckQuest()
         end
     end
-end)
-
+end) 
         end
     end
 end)
