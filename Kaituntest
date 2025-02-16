@@ -46,7 +46,7 @@ end
 spawn(function()
     while wait() do
         if _G.AutoFarm then
-           
+            
 spawn(function()
 		pcall(function()
 			while wait() do
@@ -94,16 +94,34 @@ local function CheckQuest()
             CFrameQuest = CFrame.new(1059.37195, 15.4495068, 1550.4231, 0.939700544, -0, -0.341998369, 0, 1, -0, 0.341998369, 0, 0.939700544)
             CFrameMon = CFrame.new(1045.962646484375, 27.00250816345215, 1560.8203125)
         elseif MyLevel == 10 or MyLevel <= 14 then
-        elseif MyLevel == 150 then
-            Mon = "Sky Bandit"
-            NameMon = "Sky Bandit"
-            CFrameMon = CFrame.new(-4953.20703125, 295.74420166015625, -2899.22900390625)
-        elseif MyLevel == 175 or MyLevel <= 189 then
+elseif MyLevel == 150 then
+    Mon = "Sky Bandit"
+    NameMon = "Sky Bandit"
+    CFrameMon = CFrame.new(-4953.20703125, 295.74420166015625, -2899.22900390625)
+    
+    -- Bắt đầu auto attack Sky Bandit
+    spawn(function()
+        while wait() do
+            if game.Players.LocalPlayer.Data.Level.Value == 150 then
+                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v.Name == "Sky Bandit" and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                        game:GetService("VirtualUser"):CaptureController()
+                        game:GetService("VirtualUser"):Button1Down(Vector2.new(0, 0), Vector2.new(0, 0))
+                    end
+                end
+            else
+                break -- Dừng vòng lặp nếu không còn ở level 150
+            end
+        end
+    end)
+    elseif MyLevel == 175 or MyLevel <= 189 then
             Mon = "Dark Master"
             LevelQuest = 2
             NameQuest = "SkyQuest"
             NameMon = "Dark Master"
-                        CFrameMon = CFrame.new(-5259.8447265625, 391.3976745605469, -2229.035400390625)
+            CFrameQuest = CFrame.new(-4839.53027, 716.368591, -2619.44165, 0.866007268, 0, 0.500031412, 0, 1, 0, -0.500031412, 0, 0.866007268)
+            CFrameMon = CFrame.new(-5259.8447265625, 391.3976745605469, -2229.035400390625)
         elseif MyLevel == 190 or MyLevel <= 209 then
             Mon = "Prisoner"
             LevelQuest = 1
@@ -153,7 +171,9 @@ local function CheckQuest()
             NameMon = "Fishman Warrior"
             CFrameQuest = CFrame.new(61122.65234375, 18.497442245483, 1569.3997802734)
             CFrameMon = CFrame.new(60878.30078125, 18.482830047607422, 1543.7574462890625)
-            
+            if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
+            end
         elseif MyLevel == 400 or MyLevel <= 449 then
             Mon = "Fishman Commando"
             LevelQuest = 2
@@ -161,7 +181,9 @@ local function CheckQuest()
             NameMon = "Fishman Commando"
             CFrameQuest = CFrame.new(61122.65234375, 18.497442245483, 1569.3997802734)
             CFrameMon = CFrame.new(61922.6328125, 18.482830047607422, 1493.934326171875)
-            
+            if _G.AutoFarm and (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10000 then
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
+            end
         elseif MyLevel == 450 or MyLevel <= 474 then
             Mon = "God's Guard"
             LevelQuest = 1
@@ -1871,7 +1893,7 @@ function Module.IsAlive(Char: Model?): boolean
 end
 
 local Settings = {
-    ClickDelay = 0.01,  -- à¸›à¸£à¸±à¸šà¹ƒà¸«à¹‰à¹€à¸£à¹‡à¸§à¸—à¸µà¹ˆà¸ªà¸¸à¸”
+    ClickDelay = 0.01,  -- ปรับให้เร็วที่สุด
     AutoClick = true
 }
 
@@ -1891,7 +1913,7 @@ Module.FastAttack = (function()
     function AttackModule:AttackEnemy(EnemyHead, Table)
         if EnemyHead and client:DistanceFromCharacter(EnemyHead.Position) < self.Distance then
             if not self.FirstAttack then
-                RegisterAttack:FireServer(Settings.ClickDelay or 0.0001)  -- à¸¥à¸” ClickDelay à¹ƒà¸«à¹‰à¸™à¹‰à¸­à¸¢à¸ªà¸¸à¸”
+                RegisterAttack:FireServer(Settings.ClickDelay or 0.0001)  -- ลด ClickDelay ให้น้อยสุด
                 self.FirstAttack = true
             end
             RegisterHit:FireServer(EnemyHead, Table or {})
@@ -1920,7 +1942,7 @@ Module.FastAttack = (function()
         end
 
         if not self.FirstAttack then
-            task.wait(0.01)  -- à¸¥à¸”à¹€à¸§à¸¥à¸²à¸£à¸°à¸«à¸§à¹ˆà¸²à¸‡à¸à¸²à¸£à¹‚à¸ˆà¸¡à¸•à¸µà¹ƒà¸«à¹‰à¹€à¸£à¹‡à¸§à¸—à¸µà¹ˆà¸ªà¸¸à¸”
+            task.wait(0.01)  -- ลดเวลาระหว่างการโจมตีให้เร็วที่สุด
         end
     end
 
@@ -1930,13 +1952,13 @@ Module.FastAttack = (function()
     end
 
     task.spawn(function()
-        while task.wait(Settings.ClickDelay or 0.0001) do  -- à¸¥à¸”à¹€à¸§à¸¥à¸²à¸£à¸°à¸«à¸§à¹ˆà¸²à¸‡à¸à¸²à¸£à¸•à¸£à¸§à¸ˆà¸ªà¸­à¸šà¹ƒà¸«à¹‰à¹€à¸£à¹‡à¸§à¸ªà¸¸à¸”
-            if (tick() - Module.AttackCooldown) < 0.05 then continue end  -- à¸¥à¸”à¹€à¸§à¸¥à¸²à¹ƒà¸™à¸à¸²à¸£à¸£à¸­à¸£à¸°à¸«à¸§à¹ˆà¸²à¸‡à¸à¸²à¸£à¹‚à¸ˆà¸¡à¸•à¸µ
+        while task.wait(Settings.ClickDelay or 0.0001) do  -- ลดเวลาระหว่างการตรวจสอบให้เร็วสุด
+            if (tick() - Module.AttackCooldown) < 0.05 then continue end  -- ลดเวลาในการรอระหว่างการโจมตี
             if not Settings.AutoClick then continue end
             if not Module.IsAlive(client.Character) then continue end
             if not client.Character:FindFirstChildOfClass("Tool") then continue end
 
-            -- à¹€à¸£à¸µà¸¢à¸à¸Ÿà¸±à¸‡à¸à¹Œà¸Šà¸±à¸™ BladeHits à¸—à¸¸à¸à¸„à¸£à¸±à¹‰à¸‡à¸—à¸µà¹ˆà¸ªà¸²à¸¡à¸²à¸£à¸–à¹‚à¸ˆà¸¡à¸•à¸µà¹„à¸”à¹‰
+            -- เรียกฟังก์ชัน BladeHits ทุกครั้งที่สามารถโจมตีได้
             AttackModule:BladeHits()
         end
     end)
@@ -3047,7 +3069,7 @@ spawn(function()
                                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress","RichSon")
                                 elseif game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress","RichSon") == 0 then
                                 if game:GetService("Workspace").Enemies:FindFirstChild("Mob Leader") or game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader") then
-                                    ATween(CFrame.new(-2874.97021484375, 20.01312828063965, 5415.25244140625))---à¸„à¸§à¸¢
+                                    ATween(CFrame.new(-2874.97021484375, 20.01312828063965, 5415.25244140625))---ควย
                                         for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                                             if v.Name == "Mob Leader" then
                                                if game:GetService("Workspace").Enemies:FindFirstChild("Mob Leader [Lv. 120] [Boss]") then
@@ -3699,7 +3721,7 @@ spawn(function()
 	end)
 StopTween(_G.Auto_Dungeon)
 
-  
+ 
         end
     end
 end)
