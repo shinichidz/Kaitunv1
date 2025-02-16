@@ -83,6 +83,7 @@ elseif game.PlaceId == 4442272183 then
 elseif game.PlaceId == 7449423635 then
     World3 = true
 end
+local function CheckQuest() 
     MyLevel = game:GetService("Players").LocalPlayer.Data.Level.Value
     if World1 then
         if MyLevel == 1 or MyLevel <= 9 then
@@ -93,12 +94,9 @@ end
             CFrameQuest = CFrame.new(1059.37195, 15.4495068, 1550.4231, 0.939700544, -0, -0.341998369, 0, 1, -0, 0.341998369, 0, 0.939700544)
             CFrameMon = CFrame.new(1045.962646484375, 27.00250816345215, 1560.8203125)
         elseif MyLevel == 10 or MyLevel <= 14 then
-        elseif MyLevel == 150 or MyLevel <= 174 then
+        elseif MyLevel == 150 then
             Mon = "Sky Bandit"
-            LevelQuest = 1
-            NameQuest = "SkyQuest"
             NameMon = "Sky Bandit"
-            CFrameQuest = CFrame.new(-4839.53027, 716.368591, -2619.44165, 0.866007268, 0, 0.500031412, 0, 1, 0, -0.500031412, 0, 0.866007268)
             CFrameMon = CFrame.new(-4953.20703125, 295.74420166015625, -2899.22900390625)
         elseif MyLevel == 175 or MyLevel <= 189 then
             Mon = "Dark Master"
@@ -1878,7 +1876,7 @@ function Module.IsAlive(Char: Model?): boolean
 end
 
 local Settings = {
-    ClickDelay = 0.01,  -- ปรับให้เร็วที่สุด
+    ClickDelay = 0.01,  -- à¸›à¸£à¸±à¸šà¹ƒà¸«à¹‰à¹€à¸£à¹‡à¸§à¸—à¸µà¹ˆà¸ªà¸¸à¸”
     AutoClick = true
 }
 
@@ -1898,7 +1896,7 @@ Module.FastAttack = (function()
     function AttackModule:AttackEnemy(EnemyHead, Table)
         if EnemyHead and client:DistanceFromCharacter(EnemyHead.Position) < self.Distance then
             if not self.FirstAttack then
-                RegisterAttack:FireServer(Settings.ClickDelay or 0.0001)  -- ลด ClickDelay ให้น้อยสุด
+                RegisterAttack:FireServer(Settings.ClickDelay or 0.0001)  -- à¸¥à¸” ClickDelay à¹ƒà¸«à¹‰à¸™à¹‰à¸­à¸¢à¸ªà¸¸à¸”
                 self.FirstAttack = true
             end
             RegisterHit:FireServer(EnemyHead, Table or {})
@@ -1927,7 +1925,7 @@ Module.FastAttack = (function()
         end
 
         if not self.FirstAttack then
-            task.wait(0.01)  -- ลดเวลาระหว่างการโจมตีให้เร็วที่สุด
+            task.wait(0.01)  -- à¸¥à¸”à¹€à¸§à¸¥à¸²à¸£à¸°à¸«à¸§à¹ˆà¸²à¸‡à¸à¸²à¸£à¹‚à¸ˆà¸¡à¸•à¸µà¹ƒà¸«à¹‰à¹€à¸£à¹‡à¸§à¸—à¸µà¹ˆà¸ªà¸¸à¸”
         end
     end
 
@@ -1937,13 +1935,13 @@ Module.FastAttack = (function()
     end
 
     task.spawn(function()
-        while task.wait(Settings.ClickDelay or 0.0001) do  -- ลดเวลาระหว่างการตรวจสอบให้เร็วสุด
-            if (tick() - Module.AttackCooldown) < 0.05 then continue end  -- ลดเวลาในการรอระหว่างการโจมตี
+        while task.wait(Settings.ClickDelay or 0.0001) do  -- à¸¥à¸”à¹€à¸§à¸¥à¸²à¸£à¸°à¸«à¸§à¹ˆà¸²à¸‡à¸à¸²à¸£à¸•à¸£à¸§à¸ˆà¸ªà¸­à¸šà¹ƒà¸«à¹‰à¹€à¸£à¹‡à¸§à¸ªà¸¸à¸”
+            if (tick() - Module.AttackCooldown) < 0.05 then continue end  -- à¸¥à¸”à¹€à¸§à¸¥à¸²à¹ƒà¸™à¸à¸²à¸£à¸£à¸­à¸£à¸°à¸«à¸§à¹ˆà¸²à¸‡à¸à¸²à¸£à¹‚à¸ˆà¸¡à¸•à¸µ
             if not Settings.AutoClick then continue end
             if not Module.IsAlive(client.Character) then continue end
             if not client.Character:FindFirstChildOfClass("Tool") then continue end
 
-            -- เรียกฟังก์ชัน BladeHits ทุกครั้งที่สามารถโจมตีได้
+            -- à¹€à¸£à¸µà¸¢à¸à¸Ÿà¸±à¸‡à¸à¹Œà¸Šà¸±à¸™ BladeHits à¸—à¸¸à¸à¸„à¸£à¸±à¹‰à¸‡à¸—à¸µà¹ˆà¸ªà¸²à¸¡à¸²à¸£à¸–à¹‚à¸ˆà¸¡à¸•à¸µà¹„à¸”à¹‰
             AttackModule:BladeHits()
         end
     end)
@@ -2033,6 +2031,7 @@ spawn(function()
                 end
                 if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
                     StartMagnet = false
+                    CheckQuest()
                     if BypassTP then
                     if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrameQuest.Position).Magnitude > 1500 then
                     BTP(CFrameQuest)
@@ -2046,6 +2045,7 @@ spawn(function()
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",NameQuest,LevelQuest)
                     end
                 elseif game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+                    CheckQuest()
                     if game:GetService("Workspace").Enemies:FindFirstChild(Mon) then
                         for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                             if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
@@ -2095,6 +2095,7 @@ spawn(function()
                 end
                 if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
                     StartMagnet = false
+                    CheckQuest()
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",NameQuest,LevelQuest)
                     if BypassTP then
                     if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrameMon.Position).Magnitude > 1500 then
@@ -2106,6 +2107,7 @@ spawn(function()
                     ATween(CFrameMon)
                 end
                 elseif game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+                    CheckQuest()
                     if game:GetService("Workspace").Enemies:FindFirstChild(Mon) then
                         for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                             if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
@@ -2174,6 +2176,7 @@ spawn(function()
     while task.wait() do
         pcall(function()
             if _G.BringMonster then
+                CheckQuest()
                 for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                     if _G.AutoFarm and StartMagnet and v.Name == Mon and (Mon == "Factory Staff" or Mon == "Monkey" or Mon == "Dragon Crew Warrior" or Mon == "Dragon Crew Archer") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and (v.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 220 then
                         v.HumanoidRootPart.Size = Vector3.new(50,50,50)
@@ -2205,6 +2208,7 @@ spawn(function()
     while task.wait() do
         pcall(function()
             if _G.BringMonster then
+                CheckQuest()
                 for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                     if _G.AutoFarm and StartMagnet and v.Name == Mon and (Mon == "Factory Staff" or Mon == "Monkey" or Mon == "Dragon Crew Warrior" or Mon == "Dragon Crew Archer") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and (v.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 250 then
                         v.HumanoidRootPart.Size = Vector3.new(150,150,150)
@@ -3048,7 +3052,7 @@ spawn(function()
                                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress","RichSon")
                                 elseif game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress","RichSon") == 0 then
                                 if game:GetService("Workspace").Enemies:FindFirstChild("Mob Leader") or game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader") then
-                                    ATween(CFrame.new(-2874.97021484375, 20.01312828063965, 5415.25244140625))---ควย
+                                    ATween(CFrame.new(-2874.97021484375, 20.01312828063965, 5415.25244140625))---à¸„à¸§à¸¢
                                         for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                                             if v.Name == "Mob Leader" then
                                                if game:GetService("Workspace").Enemies:FindFirstChild("Mob Leader [Lv. 120] [Boss]") then
