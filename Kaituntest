@@ -1,28 +1,41 @@
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 local Frame = Instance.new("Frame", ScreenGui)
-Frame.Size = UDim2.new(0, 250, 0, 100)
-Frame.Position = UDim2.new(0.5, -125, 0.1, 0)
-Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.Size = UDim2.new(0, 300, 0, 150)
+Frame.Position = UDim2.new(0.5, -150, 0.1, 0)
+Frame.BackgroundTransparency = 1
 
-local Title = Instance.new("TextLabel", Frame)
-Title.Size = UDim2.new(1, 0, 0, 30)
-Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.Font = Enum.Font.SourceSansBold
-Title.TextSize = 18
+local Background = Instance.new("ImageLabel", Frame)
+Background.Size = UDim2.new(1, 0, 1, 0)
+Background.Image = "rbxassetid://74026087738956"
+Background.BackgroundTransparency = 1
 
-local AutoFarmStatus = Instance.new("TextLabel", Frame)
-AutoFarmStatus.Size = UDim2.new(1, 0, 0, 40)
-AutoFarmStatus.Position = UDim2.new(0, 0, 0, 40)
-AutoFarmStatus.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-AutoFarmStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
-AutoFarmStatus.Font = Enum.Font.SourceSansBold
-AutoFarmStatus.TextSize = 16
+local UserInfo = Instance.new("TextLabel", Frame)
+UserInfo.Size = UDim2.new(1, 0, 0, 30)
+UserInfo.Position = UDim2.new(0, 0, 0, 10)
+UserInfo.BackgroundTransparency = 1
+UserInfo.TextColor3 = Color3.fromRGB(255, 255, 255)
+UserInfo.Font = Enum.Font.SourceSansBold
+UserInfo.TextSize = 18
+
+local function UpdateUserInfo()
+    local player = game.Players.LocalPlayer
+    UserInfo.Text = "Level: " .. player.Data.Level.Value ..
+                    " | Beli: " .. player.Data.Beli.Value ..
+                    " | Fragments: " .. player.Data.Fragments.Value
+end
+
+spawn(function()
+    while wait(1) do
+        UpdateUserInfo()
+    end
+end)
 
 _G.AutoFarm = true
 
+-- Auto nhập toàn bộ code X2 EXP & code mới nhất
 local codes = {
-    "UPDATE20", "RESET2025", "X2EXP2025", "NEWBOSS", "HAPPYNEWYEAR", "FREESTATS2025"
+    "X2EXP_2025", "NEWYEARBOOST", "FREESTATS2025", "UPDATE20", 
+    "RESETSTATS", "X2EXP_WEEKEND", "BOOSTXP2025", "GOLDENFRUITS"
 }
 for _, code in pairs(codes) do
     pcall(function()
@@ -81,68 +94,6 @@ local function CheckQuest()
             CFrameQuest = CFrame.new(1059.37195, 15.4495068, 1550.4231, 0.939700544, -0, -0.341998369, 0, 1, -0, 0.341998369, 0, 0.939700544)
             CFrameMon = CFrame.new(1045.962646484375, 27.00250816345215, 1560.8203125)
         elseif MyLevel == 10 or MyLevel <= 14 then
-            Mon = "Monkey"
-            LevelQuest = 1
-            NameQuest = "JungleQuest"
-            NameMon = "Monkey"
-            CFrameQuest = CFrame.new(-1598.08911, 35.5501175, 153.377838, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-            CFrameMon = CFrame.new(-1448.51806640625, 67.85301208496094, 11.46579647064209)
-        elseif MyLevel == 15 or MyLevel <= 29 then
-            Mon = "Gorilla"
-            LevelQuest = 2
-            NameQuest = "JungleQuest"
-            NameMon = "Gorilla"
-            CFrameQuest = CFrame.new(-1598.08911, 35.5501175, 153.377838, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-            CFrameMon = CFrame.new(-1129.8836669921875, 40.46354675292969, -525.4237060546875)
-        elseif MyLevel == 30 or MyLevel <= 39 then
-            Mon = "Pirate"
-            LevelQuest = 1
-            NameQuest = "BuggyQuest1"
-            NameMon = "Pirate"
-            CFrameQuest = CFrame.new(-1141.07483, 4.10001802, 3831.5498, 0.965929627, -0, -0.258804798, 0, 1, -0, 0.258804798, 0, 0.965929627)
-            CFrameMon = CFrame.new(-1103.513427734375, 13.752052307128906, 3896.091064453125)
-        elseif MyLevel == 40 or MyLevel <= 59 then
-            Mon = "Brute"
-            LevelQuest = 2
-            NameQuest = "BuggyQuest1"
-            NameMon = "Brute"
-            CFrameQuest = CFrame.new(-1141.07483, 4.10001802, 3831.5498, 0.965929627, -0, -0.258804798, 0, 1, -0, 0.258804798, 0, 0.965929627)
-            CFrameMon = CFrame.new(-1140.083740234375, 14.809885025024414, 4322.92138671875)
-        elseif MyLevel == 60 or MyLevel <= 74 then
-            Mon = "Desert Bandit"
-            LevelQuest = 1
-            NameQuest = "DesertQuest"
-            NameMon = "Desert Bandit"
-            CFrameQuest = CFrame.new(894.488647, 5.14000702, 4392.43359, 0.819155693, -0, -0.573571265, 0, 1, -0, 0.573571265, 0, 0.819155693)
-            CFrameMon = CFrame.new(924.7998046875, 6.44867467880249, 4481.5859375)
-        elseif MyLevel == 75 or MyLevel <= 89 then
-            Mon = "Desert Officer"
-            LevelQuest = 2
-            NameQuest = "DesertQuest"
-            NameMon = "Desert Officer"
-            CFrameQuest = CFrame.new(894.488647, 5.14000702, 4392.43359, 0.819155693, -0, -0.573571265, 0, 1, -0, 0.573571265, 0, 0.819155693)
-            CFrameMon = CFrame.new(1608.2822265625, 8.614224433898926, 4371.00732421875)
-        elseif MyLevel == 90 or MyLevel <= 99 then
-            Mon = "Snow Bandit"
-            LevelQuest = 1
-            NameQuest = "SnowQuest"
-            NameMon = "Snow Bandit"
-            CFrameQuest = CFrame.new(1389.74451, 88.1519318, -1298.90796, -0.342042685, 0, 0.939684391, 0, 1, 0, -0.939684391, 0, -0.342042685)
-            CFrameMon = CFrame.new(1354.347900390625, 87.27277374267578, -1393.946533203125)
-        elseif MyLevel == 100 or MyLevel <= 119 then
-            Mon = "Snowman"
-            LevelQuest = 2
-            NameQuest = "SnowQuest"
-            NameMon = "Snowman"
-            CFrameQuest = CFrame.new(1389.74451, 88.1519318, -1298.90796, -0.342042685, 0, 0.939684391, 0, 1, 0, -0.939684391, 0, -0.342042685)
-            CFrameMon = CFrame.new(1201.6412353515625, 144.57958984375, -1550.0670166015625)
-        elseif MyLevel == 120 or MyLevel <= 149 then
-            Mon = "Chief Petty Officer"
-            LevelQuest = 1
-            NameQuest = "MarineQuest2"
-            NameMon = "Chief Petty Officer"
-            CFrameQuest = CFrame.new(-5039.58643, 27.3500385, 4324.68018, 0, 0, -1, 0, 1, 0, 1, 0, 0)
-            CFrameMon = CFrame.new(-4881.23095703125, 22.65204429626465, 4273.75244140625)
         elseif MyLevel == 150 or MyLevel <= 174 then
             Mon = "Sky Bandit"
             LevelQuest = 1
@@ -150,7 +101,7 @@ local function CheckQuest()
             NameMon = "Sky Bandit"
             CFrameQuest = CFrame.new(-4839.53027, 716.368591, -2619.44165, 0.866007268, 0, 0.500031412, 0, 1, 0, -0.500031412, 0, 0.866007268)
             CFrameMon = CFrame.new(-4953.20703125, 295.74420166015625, -2899.22900390625)
-        elseif MyLevel == 175 or MyLevel <= 189 then
+        elseif MyLevel == 150 or MyLevel <= 189 then
             Mon = "Dark Master"
             LevelQuest = 2
             NameQuest = "SkyQuest"
