@@ -46,7 +46,7 @@ end
 spawn(function()
     while wait() do
         if _G.AutoFarm then
-          
+            
 spawn(function()
 		pcall(function()
 			while wait() do
@@ -3700,7 +3700,7 @@ spawn(function()
 	end)
 StopTween(_G.Auto_Dungeon)
 
-  
+ 
         end
     end
 end)
