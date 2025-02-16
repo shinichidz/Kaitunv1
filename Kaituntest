@@ -99,16 +99,23 @@ elseif MyLevel == 150 then
     NameMon = "Sky Bandit"
     CFrameMon = CFrame.new(-4953.20703125, 295.74420166015625, -2899.22900390625)
     
-    -- Bắt đầu auto attack Sky Bandit
+    -- Bắt đầu auto tìm và đánh Sky Bandit
     spawn(function()
-        while wait() do
+        while wait(0.5) do
             if game.Players.LocalPlayer.Data.Level.Value == 150 then
+                local target = nil
                 for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
                     if v.Name == "Sky Bandit" and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
-                        game:GetService("VirtualUser"):CaptureController()
-                        game:GetService("VirtualUser"):Button1Down(Vector2.new(0, 0), Vector2.new(0, 0))
+                        target = v
+                        break
                     end
+                end
+
+                if target then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                    wait(0.2) -- Đợi nhân vật ổn định vị trí trước khi tấn công
+                    game:GetService("VirtualUser"):CaptureController()
+                    game:GetService("VirtualUser"):Button1Down(Vector2.new(0, 0), Vector2.new(0, 0))
                 end
             else
                 break -- Dừng vòng lặp nếu không còn ở level 150
