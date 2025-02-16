@@ -3774,6 +3774,38 @@ spawn(function()
 StopTween(_G.Auto_Dungeon)
 
  
+
+spawn(function()
+    while wait(0.5) do
+        local player = game.Players.LocalPlayer
+        local char = player.Character
+        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+        local level = player.Data.Level.Value
+
+        if level >= 15 and level < 100 then
+            -- Kiểm tra nếu chưa ở đảo Sky thì bay lên
+            if hrp.Position.Y < 500 then
+                hrp.CFrame = CFrame.new(-5000, 800, -2600) -- Vị trí đảo Sky
+                wait(2)
+            end
+
+            -- Tìm quái Sky Bandit và đánh
+            for _, enemy in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                if enemy.Name == "Sky Bandit" and enemy:FindFirstChild("Humanoid") and enemy.Humanoid.Health > 0 then
+                    hrp.CFrame = enemy.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                    wait(0.2)
+                    game:GetService("VirtualUser"):CaptureController()
+                    game:GetService("VirtualUser"):Button1Down(Vector2.new(0, 0), Vector2.new(0, 0))
+                    break
+                end
+            end
+        elseif level >= 100 then
+            -- Quay về farm nhiệm vụ bình thường
+            CheckQuest()
+        end
+    end
+end)
+
         end
     end
 end)
