@@ -4919,6 +4919,26 @@ if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectric
     end
 end
 
+            local player = game.Players.LocalPlayer
+            local char = player.Character or player.CharacterAdded:Wait()
+
+            while _G.AutoFarm and wait() do
+                pcall(function()
+                    local quest = game:GetService("ReplicatedStorage").Remotes["GetQuest"]
+                    local attack = game:GetService("ReplicatedStorage").Remotes["Combat"]
+
+                    -- Nhận nhiệm vụ
+                    quest:InvokeServer("AutoQuest") 
+
+                    -- Tấn công quái
+                    for _, enemy in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                        if enemy:FindFirstChild("Humanoid") and enemy.Humanoid.Health > 0 then
+                            char:SetPrimaryPartCFrame(enemy.HumanoidRootPart.CFrame + Vector3.new(0, 5, 0))
+                            attack:InvokeServer("Attack")
+                        end
+                    end
+                end)
+            end
         end
     end
 end)
